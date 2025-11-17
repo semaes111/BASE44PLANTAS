@@ -26,9 +26,9 @@ export default function DetallePlanta() {
       try {
         const [userData, plantData] = await Promise.all([
           base44.auth.me(),
-          base44.entities.Plant.list()
+          base44.entities.PlantaFormulario.list()
         ]);
-        
+
         setUser(userData);
         const foundPlant = plantData.find(p => p.id === plantId);
         setPlant(foundPlant);
@@ -109,7 +109,7 @@ export default function DetallePlanta() {
 
           {/* QR y Descargas */}
           <div className="space-y-6">
-            <QRCodeDisplay qrCode={plant.qr_code} plantName={plant.nombre_cientifico} />
+            <QRCodeDisplay qrCode={plant.codigo_qr} plantName={plant.nombre_cientifico} />
             <DownloadOptions plant={plant} />
           </div>
         </div>

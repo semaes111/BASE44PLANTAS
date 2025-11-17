@@ -54,16 +54,19 @@ export default function NuevoFormulario() {
   const createPlantaMutation = useMutation({
     mutationFn: async (plantaData) => {
       const createdPlanta = await base44.entities.PlantaFormulario.create(plantaData);
-      
+
       // Generar URL completa para el QR
       const baseUrl = window.location.origin;
       const plantaUrl = `${baseUrl}${createPageUrl("DetallePlanta")}?id=${createdPlanta.id}`;
-      
-      // Actualizar con el código QR que contiene la URL
+
+      // Generar código QR con la URL de la planta
+      const qrCode = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(plantaUrl)}`;
+
+      // Actualizar con el código QR
       await base44.entities.PlantaFormulario.update(createdPlanta.id, {
-        codigo_qr: plantaUrl
+        codigo_qr: qrCode
       });
-      
+
       return createdPlanta;
     },
     onSuccess: (data) => {
