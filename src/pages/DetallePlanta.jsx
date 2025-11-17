@@ -26,12 +26,11 @@ export default function DetallePlanta() {
       try {
         const [userData, plantData] = await Promise.all([
           base44.auth.me(),
-          base44.entities.PlantaFormulario.list()
+          base44.entities.PlantaFormulario.get(plantId)
         ]);
 
         setUser(userData);
-        const foundPlant = plantData.find(p => p.id === plantId);
-        setPlant(foundPlant);
+        setPlant(plantData);
       } catch (error) {
         console.error("Error:", error);
       } finally {
