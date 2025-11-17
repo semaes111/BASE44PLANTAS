@@ -92,17 +92,17 @@ export default function CrearPlanta() {
         caracteristicas: Object.keys(caracteristicas).length > 0 ? caracteristicas : null,
       };
 
-      const createdPlant = await base44.entities.Plant.create(plantData);
+      const createdPlant = await base44.entities.PlantaFormulario.create(plantData);
 
       // Generar URL completa para el QR
       const baseUrl = window.location.origin;
       const plantaUrl = `${baseUrl}${createPageUrl("DetallePlanta")}?id=${createdPlant.id}`;
-      
+
       // Generar código QR con la URL de la planta
       const qrCode = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(plantaUrl)}`;
 
       // Actualizar la planta con el QR
-      await base44.entities.Plant.update(createdPlant.id, { qr_code: qrCode });
+      await base44.entities.PlantaFormulario.update(createdPlant.id, { codigo_qr: qrCode });
 
       navigate(createPageUrl("DetallePlanta") + `?id=${createdPlant.id}`);
     } catch (error) {
