@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos de Plantas - Base44</title>
+    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 via-white to-amber-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md border-b border-green-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">Base44 Plantas</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="user-name" class="text-sm text-gray-600"></span>
+                    <button id="logout-btn" class="text-sm text-red-600 hover:text-red-700 hidden">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="app-content" class="p-4 md:p-8">
+        <!-- Dashboard Content -->
+        <div id="dashboard-page" class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                        Base de Datos de Plantas
+                    </h1>
+                    <p class="text-gray-600 mt-2 text-lg">Gestión completa del inventario botánico</p>
+                </div>
+                <div class="flex gap-3 w-full md:w-auto">
+                    <button id="export-btn" class="flex-1 md:flex-none px-4 py-2 border border-green-200 rounded-lg hover:bg-green-50 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Exportar Excel
+                    </button>
+                    <a href="./pages/crear-planta.html" id="new-plant-btn" class="hidden flex-1 md:flex-none px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Nueva Planta
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div id="stats-container" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <!-- Stats cards will be inserted here -->
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-green-100">
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input
+                        id="search-input"
+                        type="text"
+                        placeholder="Buscar por nombre, proveedor, ubicación..."
+                        class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+                    />
+                </div>
+            </div>
+
+            <!-- Plants Grid -->
+            <div id="loading-state" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+                <div class="h-64 bg-gray-100 animate-pulse rounded-2xl"></div>
+            </div>
+
+            <div id="empty-state" class="hidden text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-100">
+                <svg class="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                </svg>
+                <h3 id="empty-title" class="text-2xl font-semibold text-gray-600 mb-2">Aún no hay plantas registradas</h3>
+                <p id="empty-description" class="text-gray-500 mb-6">Comienza registrando tu primera planta</p>
+                <a href="./pages/crear-planta.html" id="empty-cta" class="hidden inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Registrar Primera Planta
+                </a>
+            </div>
+
+            <div id="plants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Plant cards will be inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <!-- Import map for modules -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@base44plantas/api-client": "/packages/api-client/base44-client.js",
+            "@base44plantas/api-client/entities": "/packages/api-client/entities.js",
+            "@base44plantas/utils/dom": "/packages/utils/dom-helpers.js",
+            "@base44plantas/utils/format": "/packages/utils/format-helpers.js",
+            "@base44plantas/ui-components/card": "/packages/ui-components/card.js",
+            "@base44plantas/ui-components/button": "/packages/ui-components/button.js"
+        }
+    }
+    </script>
+
+    <!-- Main App Script -->
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "@base44plantas/utils",
+  "version": "1.0.0",
+  "description": "Utility functions for Base44 Plantas",
+  "type": "module",
+  "exports": {
+    "./dom": "./dom-helpers.js",
+    "./format": "./format-helpers.js"
+  }
+}

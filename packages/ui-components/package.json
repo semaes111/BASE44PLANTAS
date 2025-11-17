@@ -1,0 +1,11 @@
+{
+  "name": "@base44plantas/ui-components",
+  "version": "1.0.0",
+  "description": "UI Components library for Base44 Plantas",
+  "type": "module",
+  "exports": {
+    "./card": "./card.js",
+    "./button": "./button.js",
+    "./modal": "./modal.js"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@base44plantas/api-client",
+  "version": "1.0.0",
+  "description": "Base44 API Client for plant management",
+  "type": "module",
+  "main": "base44-client.js",
+  "exports": {
+    ".": "./base44-client.js",
+    "./entities": "./entities.js"
+  }
+}
