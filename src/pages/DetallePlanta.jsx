@@ -24,15 +24,28 @@ export default function DetallePlanta() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userData, plantData] = await Promise.all([
+        const results = await Promise.allSettled([
           base44.auth.me(),
           base44.entities.PlantaFormulario.get(plantId)
         ]);
 
-        setUser(userData);
-        setPlant(plantData);
+        const [userResult, plantResult] = results;
+
+        // Set user data if the auth call succeeded
+        if (userResult.status === 'fulfilled') {
+          setUser(userResult.value);
+        } else {
+          console.error("Error fetching user data:", userResult.reason);
+        }
+
+        // Set plant data if the plant fetch succeeded
+        if (plantResult.status === 'fulfilled') {
+          setPlant(plantResult.value);
+        } else {
+          console.error("Error fetching plant data:", plantResult.reason);
+        }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Unexpected error:", error);
       } finally {
         setIsLoading(false);
       }
